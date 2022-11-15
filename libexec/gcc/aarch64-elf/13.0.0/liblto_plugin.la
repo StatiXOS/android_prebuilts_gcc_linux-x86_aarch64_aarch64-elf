@@ -14,10 +14,10 @@ library_names='liblto_plugin.so liblto_plugin.so liblto_plugin.so'
 old_library=''
 
 # Linker flags that can not go in dependency_libs.
-inherited_linker_flags=''
+inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -lpthread'
+dependency_libs=''
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

@@ -1,6 +1,6 @@
 /* Generated automatically. */
-static const char configuration_arguments[] = "../gcc/configure --target=aarch64-elf CFLAGS='-flto -O3 -pipe -ffunction-sections -fdata-sections -lpthread' CXXFLAGS='-flto -O3 -pipe -ffunction-sections -fdata-sections -lpthread' --prefix=/home/vaisakh/gcc/gcc-build/../gcc-arm64 --disable-decimal-float --disable-gcov --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libstdcxx-pch --disable-nls --disable-shared --disable-docs --enable-default-ssp --enable-languages=c,c++ --with-pkgversion='Eva GCC for StatiX' --with-newlib --with-gnu-as --with-gnu-ld --with-linker-hash-style=gnu --with-sysroot";
-static const char thread_model[] = "single";
+static const char configuration_arguments[] = "../gcc/configure --target=aarch64-elf CFLAGS='-flto -flto-compression-level=10 -O3 -pipe -ffunction-sections -fdata-sections' CXXFLAGS='-flto -flto-compression-level=10 -O3 -pipe -ffunction-sections -fdata-sections' --disable-decimal-float --disable-docs --disable-gcov --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libstdcxx-pch --disable-nls --disable-shared --enable-default-ssp --enable-languages=c,c++ --enable-threads=posix --prefix=/home/vaisakh/gcc/gcc-build/../gcc-arm64 --with-gnu-as --with-gnu-ld --with-headers=/usr/include --with-linker-hash-style=gnu --with-newlib --with-pkgversion='Eva GCC for StatiX' --with-sysroot";
+static const char thread_model[] = "posix";
 
 static const struct {
   const char *name, *value;

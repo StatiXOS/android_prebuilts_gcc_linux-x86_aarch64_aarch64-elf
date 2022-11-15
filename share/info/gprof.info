@@ -27,7 +27,7 @@ to determine which parts of a program are taking most of the execution
 time.  We assume that you know how to write, compile, and execute
 programs.  GNU 'gprof' was written by Jay Fenlason.
 
-   This manual is for 'gprof' (Eva Binutils (StatiX)) version 2.38.50.
+   This manual is for 'gprof' (Eva Binutils) version 2.39.50.
 
    This document is distributed under the terms of the GNU Free
 Documentation License version 1.3.  A copy of the license is included in
@@ -317,6 +317,9 @@ which prints a flat profile and call graph analysis for all functions.
      blurbs that try to explain the meaning of all of the fields in the
      tables.  This is useful if you intend to print out the output, or
      are tired of seeing the blurbs.
+
+'-B'
+     The '-B' option causes 'gprof' to print the call graph analysis.
 
 '-C[SYMSPEC]'
 '--exec-counts[=SYMSPEC]'
@@ -2426,35 +2429,35 @@ their use in free software.
 
 Tag Table:
 Node: Top719
-Node: Introduction2054
-Node: Compiling4545
-Node: Executing8601
-Node: Invoking11494
-Node: Output Options12909
-Node: Analysis Options20001
-Node: Miscellaneous Options23921
-Node: Deprecated Options25175
-Node: Symspecs27238
-Node: Output29064
-Node: Flat Profile30104
-Node: Call Graph35057
-Node: Primary38289
-Node: Callers40877
-Node: Subroutines42995
-Node: Cycles44836
-Node: Line-by-line51613
-Node: Annotated Source55689
-Node: Inaccuracy58687
-Node: Sampling Error58945
-Node: Assumptions61849
-Node: How do I?63319
-Node: Incompatibilities64876
-Node: Details66370
-Node: Implementation66763
-Node: File Format72662
-Node: Internals76954
-Node: Debugging85444
-Node: GNU Free Documentation License87034
+Node: Introduction2045
+Node: Compiling4536
+Node: Executing8592
+Node: Invoking11485
+Node: Output Options12900
+Node: Analysis Options20068
+Node: Miscellaneous Options23988
+Node: Deprecated Options25242
+Node: Symspecs27305
+Node: Output29131
+Node: Flat Profile30171
+Node: Call Graph35124
+Node: Primary38356
+Node: Callers40944
+Node: Subroutines43062
+Node: Cycles44903
+Node: Line-by-line51680
+Node: Annotated Source55756
+Node: Inaccuracy58754
+Node: Sampling Error59012
+Node: Assumptions61916
+Node: How do I?63386
+Node: Incompatibilities64943
+Node: Details66437
+Node: Implementation66830
+Node: File Format72729
+Node: Internals77021
+Node: Debugging85511
+Node: GNU Free Documentation License87101
 
 End Tag Table
 
