@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "LD 1"
-.TH LD 1 "2022-11-15" "binutils-2.39.50" "GNU Development Tools"
+.TH LD 1 "2023-02-23" "binutils-2.40.50" "GNU Development Tools"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -1057,9 +1057,6 @@ for Solaris compatibility.
 .IX Item "-z keyword"
 The recognized keywords are:
 .RS 4
-.IP "\fBbndplt\fR" 4
-.IX Item "bndplt"
-Always generate \s-1BND\s0 prefix in \s-1PLT\s0 entries. Supported for Linux/x86_64.
 .IP "\fBcall\-nop=prefix\-addr\fR" 4
 .IX Item "call-nop=prefix-addr"
 .PD 0
@@ -2636,7 +2633,9 @@ section and \s-1ELF\s0 \f(CW\*(C`PT_GNU_EH_FRAME\*(C'\fR segment header.
 .IX Item "--no-ld-generated-unwind-info"
 Request creation of \f(CW\*(C`.eh_frame\*(C'\fR unwind info for linker
 generated code sections like \s-1PLT.\s0  This option is on by default
-if linker generated unwind info is supported.
+if linker generated unwind info is supported.  This option also
+controls the generation of \f(CW\*(C`.sframe\*(C'\fR stack trace info for linker
+generated code sections like \s-1PLT.\s0
 .IP "\fB\-\-enable\-new\-dtags\fR" 4
 .IX Item "--enable-new-dtags"
 .PD 0
@@ -3457,7 +3456,7 @@ the Info entries for \fIbinutils\fR and
 \&\fIld\fR.
 .SH "COPYRIGHT"
 .IX Header "COPYRIGHT"
-Copyright (c) 1991\-2022 Free Software Foundation, Inc.
+Copyright (c) 1991\-2023 Free Software Foundation, Inc.
 .PP
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the \s-1GNU\s0 Free Documentation License, Version 1.3

@@ -133,7 +133,7 @@
 .\" ========================================================================
 .\"
 .IX Title "OBJDUMP 1"
-.TH OBJDUMP 1 "2022-11-15" "binutils-2.39.50" "GNU Development Tools"
+.TH OBJDUMP 1 "2023-02-23" "binutils-2.40.50" "GNU Development Tools"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -175,6 +175,7 @@ objdump [\fB\-a\fR|\fB\-\-archive\-headers\fR]
         [\fB\-wE\fR|\fB\-\-dwarf=do\-not\-use\-debuginfod\fR]
         [\fB\-L\fR|\fB\-\-process\-links\fR]
         [\fB\-\-ctf=\fR\fIsection\fR]
+        [\fB\-\-sframe=\fR\fIsection\fR]
         [\fB\-G\fR|\fB\-\-stabs\fR]
         [\fB\-t\fR|\fB\-\-syms\fR]
         [\fB\-T\fR|\fB\-\-dynamic\-syms\fR]
@@ -186,6 +187,7 @@ objdump [\fB\-a\fR|\fB\-\-archive\-headers\fR]
         [\fB\-\-prefix\-addresses\fR]
         [\fB\-\-[no\-]show\-raw\-insn\fR]
         [\fB\-\-adjust\-vma=\fR\fIoffset\fR]
+        [\fB\-\-show\-all\-symbols\fR]
         [\fB\-\-dwarf\-depth=\fR\fIn\fR]
         [\fB\-\-dwarf\-start=\fR\fIn\fR]
         [\fB\-\-ctf\-parent=\fR\fIsection\fR]
@@ -330,8 +332,9 @@ used when disassembling.
 .IP "\fB\-\-disassemble\-all\fR" 4
 .IX Item "--disassemble-all"
 .PD
-Like \fB\-d\fR, but disassemble the contents of all sections, not just
-those expected to contain instructions.
+Like \fB\-d\fR, but disassemble the contents of all non-empty
+non-bss sections, not just those expected to contain instructions.
+\&\fB\-j\fR may be used to select specific sections.
 .Sp
 This option also has a subtle effect on the disassembly of
 instructions in code sections.  When option \fB\-d\fR is in effect
@@ -439,7 +442,8 @@ for specification with \fB\-b\fR or \fB\-m\fR.
 .IP "\fB\-\-section=\fR\fIname\fR" 4
 .IX Item "--section=name"
 .PD
-Display information only for section \fIname\fR.
+Display information for section \fIname\fR.  This option may be
+specified multiple times.
 .IP "\fB\-L\fR" 4
 .IX Item "-L"
 .PD 0
@@ -469,6 +473,12 @@ Specify the architecture to use when disassembling object files.  This
 can be useful when disassembling object files which do not describe
 architecture information, such as S\-records.  You can list the available
 architectures with the \fB\-i\fR option.
+.Sp
+For most architectures it is possible to supply an architecture
+name and a machine name, separated by a colon.  For example
+\&\fBfoo:bar\fR would refer to the \fBbar\fR machine type in the
+\&\fBfoo\fR architecture.  This can be helpful if objdump has been
+configured to support multiple architectures.
 .Sp
 If the target is an \s-1ARM\s0 architecture then this switch has an
 additional effect.  It restricts the disassembly to only those
@@ -801,8 +811,9 @@ disassembly.
 .IP "\fB\-\-full\-contents\fR" 4
 .IX Item "--full-contents"
 .PD
-Display the full contents of any sections requested.  By default all
-non-empty sections are displayed.
+Display the full contents of sections, often used in combination with
+\&\fB\-j\fR to request specific sections.  By default all non-empty
+non-bss sections are displayed.
 .IP "\fB\-S\fR" 4
 .IX Item "-S"
 .PD 0
@@ -811,6 +822,10 @@ non-empty sections are displayed.
 .PD
 Display source code intermixed with disassembly, if possible.  Implies
 \&\fB\-d\fR.
+.IP "\fB\-\-show\-all\-symbols\fR" 4
+.IX Item "--show-all-symbols"
+When disassembling, show all the symbols that match a given address,
+not just the first one.
 .IP "\fB\-\-source\-comment[=\fR\fItxt\fR\fB]\fR" 4
 .IX Item "--source-comment[=txt]"
 Like the \fB\-S\fR option, but all source code lines are displayed
@@ -1199,6 +1214,12 @@ function at link time.  When looking at \s-1CTF\s0 archives that have been
 created by a linker that uses the name changer to rename the parent
 archive member, \fB\-\-ctf\-parent\fR can be used to specify the name
 used for the parent.
+.IP "\fB\-\-sframe[=\fR\fIsection\fR\fB]\fR" 4
+.IX Item "--sframe[=section]"
+Display the contents of the specified SFrame section.
+.Sp
+By default, display the name of the section named \fI.sframe\fR, which is the
+name emitted by \fBld\fR.
 .IP "\fB\-G\fR" 4
 .IX Item "-G"
 .PD 0
@@ -1430,7 +1451,7 @@ with a backslash.  The \fIfile\fR may itself contain additional
 \&\fBnm\fR\|(1), \fBreadelf\fR\|(1), and the Info entries for \fIbinutils\fR.
 .SH "COPYRIGHT"
 .IX Header "COPYRIGHT"
-Copyright (c) 1991\-2022 Free Software Foundation, Inc.
+Copyright (c) 1991\-2023 Free Software Foundation, Inc.
 .PP
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the \s-1GNU\s0 Free Documentation License, Version 1.3
