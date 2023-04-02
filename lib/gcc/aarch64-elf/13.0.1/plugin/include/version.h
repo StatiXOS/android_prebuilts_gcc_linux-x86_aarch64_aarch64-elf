@@ -9,7 +9,7 @@
 BASEVER, DATESTAMP, DEVPHASE, and REVISION are defined by the
 Makefile.  */
 
-#define version_string "13.0.1 20230223 (Bleeding Edge)"
+#define version_string "13.0.1 20230402 (Bleeding Edge)"
 #define pkgversion_string "(Eva GCC for StatiX) "
 
 /* This is the location of the online document giving instructions for

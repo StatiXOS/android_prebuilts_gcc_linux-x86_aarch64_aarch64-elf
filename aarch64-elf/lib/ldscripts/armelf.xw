@@ -7,7 +7,7 @@ OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm",
 	      "elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
-SEARCH_DIR("=/home/prince/gcc-build/../gcc-arm64/aarch64-elf/lib");
+SEARCH_DIR("=/home/awadhera/gcc-build/../gcc-arm64/aarch64-elf/lib");
 SECTIONS
 {
   /* Read-only sections, merged into text segment: */
@@ -235,7 +235,7 @@ SECTIONS
   .stab.exclstr  0 : { *(.stab.exclstr) }
   .stab.index    0 : { *(.stab.index) }
   .stab.indexstr 0 : { *(.stab.indexstr) }
-  .comment       0 : { *(.comment) }
+  .comment 0 (INFO) : { *(.comment); LINKER_VERSION; }
   .gnu.build.attributes : { *(.gnu.build.attributes .gnu.build.attributes.*) }
   /* DWARF debug sections.
      Symbols in the DWARF debugging sections are relative to the beginning

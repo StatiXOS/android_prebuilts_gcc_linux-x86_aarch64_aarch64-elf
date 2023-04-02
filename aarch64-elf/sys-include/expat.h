@@ -7,7 +7,15 @@
                                  |_| XML parser
 
    Copyright (c) 1997-2000 Thai Open Source Software Center Ltd
-   Copyright (c) 2000-2017 Expat development team
+   Copyright (c) 2000      Clark Cooper <coopercc@users.sourceforge.net>
+   Copyright (c) 2000-2005 Fred L. Drake, Jr. <fdrake@users.sourceforge.net>
+   Copyright (c) 2001-2002 Greg Stein <gstein@users.sourceforge.net>
+   Copyright (c) 2002-2016 Karl Waclawek <karl@waclawek.net>
+   Copyright (c) 2016-2022 Sebastian Pipping <sebastian@pipping.org>
+   Copyright (c) 2016      Cristian Rodríguez <crrodriguez@opensuse.org>
+   Copyright (c) 2016      Thomas Beutlich <tc@tbeu.de>
+   Copyright (c) 2017      Rhodri James <rhodri@wildebeest.org.uk>
+   Copyright (c) 2022      Thijs Schreijer <thijs@thijsschreijer.nl>
    Licensed under the MIT license:
 
    Permission is  hereby granted,  free of charge,  to any  person obtaining
@@ -115,7 +123,11 @@ enum XML_Error {
   XML_ERROR_RESERVED_PREFIX_XMLNS,
   XML_ERROR_RESERVED_NAMESPACE_URI,
   /* Added in 2.2.1. */
-  XML_ERROR_INVALID_ARGUMENT
+  XML_ERROR_INVALID_ARGUMENT,
+  /* Added in 2.3.0. */
+  XML_ERROR_NO_BUFFER,
+  /* Added in 2.4.0. */
+  XML_ERROR_AMPLIFICATION_LIMIT_BREACH
 };
 
 enum XML_Content_Type {
@@ -163,8 +175,10 @@ struct XML_cp {
 };
 
 /* This is called for an element declaration. See above for
-   description of the model argument. It's the caller's responsibility
-   to free model when finished with it.
+   description of the model argument. It's the user code's responsibility
+   to free model when finished with it. See XML_FreeContentModel.
+   There is no need to free the model from the handler, it can be kept
+   around and freed at a later stage.
 */
 typedef void(XMLCALL *XML_ElementDeclHandler)(void *userData,
                                               const XML_Char *name,
@@ -317,7 +331,7 @@ typedef void(XMLCALL *XML_StartDoctypeDeclHandler)(void *userData,
                                                    const XML_Char *pubid,
                                                    int has_internal_subset);
 
-/* This is called for the start of the DOCTYPE declaration when the
+/* This is called for the end of the DOCTYPE declaration when the
    closing > is encountered, but after processing any external
    subset.
 */
@@ -524,7 +538,7 @@ typedef struct {
    Otherwise it must return XML_STATUS_ERROR.
 
    If info does not describe a suitable encoding, then the parser will
-   return an XML_UNKNOWN_ENCODING error.
+   return an XML_ERROR_UNKNOWN_ENCODING error.
 */
 typedef int(XMLCALL *XML_UnknownEncodingHandler)(void *encodingHandlerData,
                                                  const XML_Char *name,
@@ -1008,7 +1022,10 @@ enum XML_FeatureEnum {
   XML_FEATURE_SIZEOF_XML_LCHAR,
   XML_FEATURE_NS,
   XML_FEATURE_LARGE_SIZE,
-  XML_FEATURE_ATTR_INFO
+  XML_FEATURE_ATTR_INFO,
+  /* Added in Expat 2.4.0. */
+  XML_FEATURE_BILLION_LAUGHS_ATTACK_PROTECTION_MAXIMUM_AMPLIFICATION_DEFAULT,
+  XML_FEATURE_BILLION_LAUGHS_ATTACK_PROTECTION_ACTIVATION_THRESHOLD_DEFAULT
   /* Additional features must be added to the end of this enum. */
 };
 
@@ -1021,12 +1038,24 @@ typedef struct {
 XMLPARSEAPI(const XML_Feature *)
 XML_GetFeatureList(void);
 
+#ifdef XML_DTD
+/* Added in Expat 2.4.0. */
+XMLPARSEAPI(XML_Bool)
+XML_SetBillionLaughsAttackProtectionMaximumAmplification(
+    XML_Parser parser, float maximumAmplificationFactor);
+
+/* Added in Expat 2.4.0. */
+XMLPARSEAPI(XML_Bool)
+XML_SetBillionLaughsAttackProtectionActivationThreshold(
+    XML_Parser parser, unsigned long long activationThresholdBytes);
+#endif
+
 /* Expat follows the semantic versioning convention.
    See http://semver.org.
 */
 #define XML_MAJOR_VERSION 2
-#define XML_MINOR_VERSION 2
-#define XML_MICRO_VERSION 10
+#define XML_MINOR_VERSION 4
+#define XML_MICRO_VERSION 7
 
 #ifdef __cplusplus
 }

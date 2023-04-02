@@ -1,5 +1,5 @@
 /* Memory-mapping-related declarations/definitions, not architecture-specific.
-   Copyright (C) 2017-2020 Free Software Foundation, Inc.
+   Copyright (C) 2017-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 /* Flags for mremap.  */
 # define MREMAP_MAYMOVE	1
 # define MREMAP_FIXED	2
+# define MREMAP_DONTUNMAP 4
 
 /* Flags for memfd_create.  */
 # ifndef MFD_CLOEXEC

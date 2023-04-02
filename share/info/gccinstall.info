@@ -1,4 +1,4 @@
-This is gccinstall.info, produced by makeinfo version 6.7 from
+This is gccinstall.info, produced by makeinfo version 6.8 from
 install.texi.
 
 Copyright (C) 1988-2023 Free Software Foundation, Inc.
@@ -282,7 +282,8 @@ to install the libraries.
 
 GNU Multiple Precision Library (GMP) version 4.3.2 (or later)
 
-     Necessary to build GCC.  If a GMP source distribution is found in a
+     Necessary to build GCC.  It can be downloaded from
+     <https://gmplib.org/>.  If a GMP source distribution is found in a
      subdirectory of your GCC sources named 'gmp', it will be built
      together with GCC. Alternatively, if GMP is already installed but
      it is not in your library search path, you will have to configure
@@ -418,13 +419,21 @@ Texinfo version 4.7 (or later)
      Necessary for running 'makeinfo' when modifying '*.texi' files to
      test your changes.
 
-     Necessary for running 'make dvi' or 'make pdf' to create printable
-     documentation in DVI or PDF format.  Texinfo version 4.8 or later
-     is required for 'make pdf'.
+     Necessary for running 'make dvi', 'make pdf', or 'make html' to
+     create formatted documentation.  Texinfo version 4.8 or later is
+     required for 'make pdf'.
 
-     Necessary to build GCC documentation during development because the
-     generated output files are not included in the repository.  They
-     are included in releases.
+     Necessary to build GCC documentation in info format during
+     development because the generated output files are not included in
+     the repository.  (They are included in release tarballs.)
+
+     Note that the minimum requirement is for a very old version of
+     Texinfo, but recent versions of Texinfo produce better-quality
+     output, especially for HTML format.  The version of Texinfo
+     packaged with any current operating system distribution is likely
+     to be adequate for building the documentation without error, but
+     you may still want to install a newer release to get the best
+     appearance and usability of the generated manuals.
 
 TeX (any working version)
 
@@ -1411,6 +1420,14 @@ option.
      unfused is normally expected).  Disabling these instructions is the
      only way to ensure compatible code is generated; this will incur a
      performance penalty.
+
+'--with-msa'
+     On MIPS targets, make '-mmsa' the default when no '-mno-msa' option
+     is passed.
+
+'--without-msa'
+     On MIPS targets, make '-mno-msa' the default when no '-mmsa' option
+     is passed.  This is the default.
 
 '--with-mips-plt'
      On MIPS targets, make use of copy relocations and PLTs.  These
@@ -3018,6 +3035,23 @@ feature.
 
      make install-strip
 
+   By default, only the man pages and info-format GCC documentation are
+built and installed.  If you want to generate the GCC manuals in other
+formats, use commands like
+
+     make dvi
+     make pdf
+     make html
+
+to build the manuals in the corresponding formats, and
+
+     make install-dvi
+     make install-pdf
+     make install-html
+
+to install them.  Alternatively, there are prebuilt online versions of
+the manuals for released versions of GCC on the GCC web site.
+
    If you are bootstrapping a released version of GCC then please
 quickly review the build status page for your release, available from
 <https://gcc.gnu.org/buildstat.html>.  If your system is not listed for
@@ -3031,12 +3065,6 @@ following information:
    * The output of 'gcc -v' for your newly installed 'gcc'.  This tells
      us which version of GCC you built and the options you passed to
      configure.
-
-   * Whether you enabled all languages or a subset of them.  If you used
-     a full distribution then this information is part of the configure
-     options in the output of 'gcc -v', but if you downloaded the "core"
-     compiler plus additional front ends then it isn't apparent which
-     ones you built unless you tell us about it.
 
    * If the build was for GNU/Linux, also include:
         * The distribution name and version (e.g., Red Hat 7.1 or Debian
@@ -3065,20 +3093,6 @@ information is incomplete or out of date.  Send a note to
 
    If you find a bug, please report it following the bug reporting
 guidelines.
-
-   If you want to print the GCC manuals, do 'cd OBJDIR; make dvi'.  You
-will need to have 'texi2dvi' (version at least 4.7) and TeX installed.
-This creates a number of '.dvi' files in subdirectories of 'OBJDIR';
-these may be converted for printing with programs such as 'dvips'.
-Alternately, by using 'make pdf' in place of 'make dvi', you can create
-documentation in the form of '.pdf' files; this requires 'texi2pdf',
-which is included with Texinfo version 4.8 and later.  You can also buy
-printed manuals from the Free Software Foundation, though such manuals
-may not be for the most recent version of GCC.
-
-   If you would like to generate online HTML documentation, do 'cd
-OBJDIR; make html' and HTML will be generated for the gcc manuals in
-'OBJDIR/gcc/HTML'.
 
 
 File: gccinstall.info,  Node: Binaries,  Next: Specific,  Prev: Installing GCC,  Up: Top
@@ -4864,7 +4878,7 @@ Concept Index
 * Menu:
 
 * Binaries:                              Binaries.           (line    6)
-* build_configargs:                      Configuration.      (line 1847)
+* build_configargs:                      Configuration.      (line 1853)
 * Configuration:                         Configuration.      (line    6)
 * Downloading GCC:                       Downloading the source.
                                                              (line    6)
@@ -4873,7 +4887,7 @@ Concept Index
 * FDL, GNU Free Documentation License:   GNU Free Documentation License.
                                                              (line    6)
 * Host specific installation:            Specific.           (line    6)
-* host_configargs:                       Configuration.      (line 1851)
+* host_configargs:                       Configuration.      (line 1857)
 * Installing GCC: Binaries:              Binaries.           (line    6)
 * Installing GCC: Building:              Building.           (line    6)
 * Installing GCC: Configuration:         Configuration.      (line    6)
@@ -4883,7 +4897,7 @@ Concept Index
 * Specific installation notes:           Specific.           (line    6)
 * Target specific installation:          Specific.           (line    6)
 * Target specific installation notes:    Specific.           (line    6)
-* target_configargs:                     Configuration.      (line 1855)
+* target_configargs:                     Configuration.      (line 1861)
 * Testing:                               Testing.            (line    6)
 * Testsuite:                             Testing.            (line    6)
 
@@ -4896,99 +4910,99 @@ Node: Prerequisites3837
 Ref: GNAT-prerequisite5825
 Ref: GDC-prerequisite7222
 Ref: GM2-prerequisite8405
-Node: Downloading the source17673
-Node: Configuration19344
-Ref: with-gnu-as37611
-Ref: with-as38506
-Ref: with-gnu-ld39915
-Ref: WithAixSoname66562
-Ref: AixLdCommand67223
-Node: Building109214
-Node: Testing125421
-Node: Final install133162
-Node: Binaries138463
-Node: Specific139498
-Ref: aarch64-x-x140032
-Ref: alpha-x-x142052
-Ref: amd64-x-solaris2142266
-Ref: amdgcn-x-amdhsa142348
-Ref: arc-x-elf32142873
-Ref: arc-linux-uclibc143049
-Ref: arm-x-eabi143190
-Ref: avr143443
-Ref: bfin144024
-Ref: cris144287
-Ref: dos144613
-Ref: epiphany-x-elf144938
-Ref: x-x-freebsd145043
-Ref: ft32-x-elf146607
-Ref: h8300-hms146705
-Ref: hppa-hp-hpux147057
-Ref: hppa-hp-hpux10149429
-Ref: hppa-hp-hpux11149842
-Ref: x-x-linux-gnu155244
-Ref: ix86-x-linux155567
-Ref: ix86-x-solaris2155880
-Ref: ia64-x-linux156956
-Ref: ia64-x-hpux157203
-Ref: x-ibm-aix157758
-Ref: TransferAixShobj161420
-Ref: iq2000-x-elf165230
-Ref: lm32-x-elf165370
-Ref: lm32-x-uclinux165474
-Ref: loongarch165602
-Ref: m32c-x-elf166296
-Ref: m32r-x-elf166398
-Ref: m68k-x-x166500
-Ref: m68k-x-uclinux167538
-Ref: microblaze-x-elf167783
-Ref: mips-x-x167902
-Ref: moxie-x-elf169812
-Ref: msp430-x-elf169859
-Ref: nds32le-x-elf170416
-Ref: nds32be-x-elf170488
-Ref: nvptx-x-none170557
-Ref: or1k-x-elf171420
-Ref: or1k-x-linux171551
-Ref: powerpc-x-x171632
-Ref: powerpc-x-darwin171823
-Ref: powerpc-x-elf172318
-Ref: powerpc-x-linux-gnu172403
-Ref: powerpc-x-netbsd172498
-Ref: powerpc-x-eabisim172586
-Ref: powerpc-x-eabi172712
-Ref: powerpcle-x-elf172788
-Ref: powerpcle-x-eabisim172880
-Ref: powerpcle-x-eabi173013
-Ref: rl78-x-elf173096
-Ref: riscv32-x-elf173202
-Ref: riscv32-x-linux173391
-Ref: riscv64-x-elf173548
-Ref: riscv64-x-linux173737
-Ref: rx-x-elf173894
-Ref: s390-x-linux173940
-Ref: s390x-x-linux174012
-Ref: s390x-ibm-tpf174099
-Ref: x-x-solaris2174230
-Ref: sparc-x-x177798
-Ref: sparc-sun-solaris2178300
-Ref: sparc-x-linux179443
-Ref: sparc64-x-solaris2179474
-Ref: sparcv9-x-solaris2180192
-Ref: c6x-x-x180279
-Ref: visium-x-elf180371
-Ref: x-x-vxworks180479
-Ref: x86-64-x-x182002
-Ref: x86-64-x-solaris2182330
-Ref: xtensa-x-elf182980
-Ref: xtensa-x-linux183651
-Ref: windows183992
-Ref: x-x-cygwin185639
-Ref: x-x-mingw32186192
-Ref: older186574
-Ref: elf188691
-Node: GNU Free Documentation License188949
-Node: Concept Index214087
+Node: Downloading the source18212
+Node: Configuration19883
+Ref: with-gnu-as38150
+Ref: with-as39045
+Ref: with-gnu-ld40454
+Ref: WithAixSoname67332
+Ref: AixLdCommand67993
+Node: Building109984
+Node: Testing126191
+Node: Final install133932
+Node: Binaries138601
+Node: Specific139636
+Ref: aarch64-x-x140170
+Ref: alpha-x-x142190
+Ref: amd64-x-solaris2142404
+Ref: amdgcn-x-amdhsa142486
+Ref: arc-x-elf32143011
+Ref: arc-linux-uclibc143187
+Ref: arm-x-eabi143328
+Ref: avr143581
+Ref: bfin144162
+Ref: cris144425
+Ref: dos144751
+Ref: epiphany-x-elf145076
+Ref: x-x-freebsd145181
+Ref: ft32-x-elf146745
+Ref: h8300-hms146843
+Ref: hppa-hp-hpux147195
+Ref: hppa-hp-hpux10149567
+Ref: hppa-hp-hpux11149980
+Ref: x-x-linux-gnu155382
+Ref: ix86-x-linux155705
+Ref: ix86-x-solaris2156018
+Ref: ia64-x-linux157094
+Ref: ia64-x-hpux157341
+Ref: x-ibm-aix157896
+Ref: TransferAixShobj161558
+Ref: iq2000-x-elf165368
+Ref: lm32-x-elf165508
+Ref: lm32-x-uclinux165612
+Ref: loongarch165740
+Ref: m32c-x-elf166434
+Ref: m32r-x-elf166536
+Ref: m68k-x-x166638
+Ref: m68k-x-uclinux167676
+Ref: microblaze-x-elf167921
+Ref: mips-x-x168040
+Ref: moxie-x-elf169950
+Ref: msp430-x-elf169997
+Ref: nds32le-x-elf170554
+Ref: nds32be-x-elf170626
+Ref: nvptx-x-none170695
+Ref: or1k-x-elf171558
+Ref: or1k-x-linux171689
+Ref: powerpc-x-x171770
+Ref: powerpc-x-darwin171961
+Ref: powerpc-x-elf172456
+Ref: powerpc-x-linux-gnu172541
+Ref: powerpc-x-netbsd172636
+Ref: powerpc-x-eabisim172724
+Ref: powerpc-x-eabi172850
+Ref: powerpcle-x-elf172926
+Ref: powerpcle-x-eabisim173018
+Ref: powerpcle-x-eabi173151
+Ref: rl78-x-elf173234
+Ref: riscv32-x-elf173340
+Ref: riscv32-x-linux173529
+Ref: riscv64-x-elf173686
+Ref: riscv64-x-linux173875
+Ref: rx-x-elf174032
+Ref: s390-x-linux174078
+Ref: s390x-x-linux174150
+Ref: s390x-ibm-tpf174237
+Ref: x-x-solaris2174368
+Ref: sparc-x-x177936
+Ref: sparc-sun-solaris2178438
+Ref: sparc-x-linux179581
+Ref: sparc64-x-solaris2179612
+Ref: sparcv9-x-solaris2180330
+Ref: c6x-x-x180417
+Ref: visium-x-elf180509
+Ref: x-x-vxworks180617
+Ref: x86-64-x-x182140
+Ref: x86-64-x-solaris2182468
+Ref: xtensa-x-elf183118
+Ref: xtensa-x-linux183789
+Ref: windows184130
+Ref: x-x-cygwin185777
+Ref: x-x-mingw32186330
+Ref: older186712
+Ref: elf188829
+Node: GNU Free Documentation License189087
+Node: Concept Index214225
 
 End Tag Table
 

@@ -1,5 +1,5 @@
 /* Minimum guaranteed maximum values for system limits.  Linux version.
-   Copyright (C) 1993-2020 Free Software Foundation, Inc.
+   Copyright (C) 1993-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -77,8 +77,8 @@
    priority level.  */
 #define AIO_PRIO_DELTA_MAX	20
 
-/* Minimum size for a thread.  We are free to choose a reasonable value.  */
-#define PTHREAD_STACK_MIN	16384
+/* Arrange for the definition of PTHREAD_STACK_MIN.  */
+#include <bits/pthread_stack_min-dynamic.h>
 
 /* Maximum number of timer expiration overruns.  */
 #define DELAYTIMER_MAX	2147483647

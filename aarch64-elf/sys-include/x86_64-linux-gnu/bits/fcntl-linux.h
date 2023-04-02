@@ -1,5 +1,5 @@
 /* O_*, F_*, FD_* bit values for Linux.
-   Copyright (C) 2001-2020 Free Software Foundation, Inc.
+   Copyright (C) 2001-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -290,7 +290,8 @@ struct f_owner_ex
 
 #ifdef __USE_GNU
 /* Hint values for F_{GET,SET}_RW_HINT.  */
-# define RWF_WRITE_LIFE_NOT_SET	0
+# define RWH_WRITE_LIFE_NOT_SET	0
+# define RWF_WRITE_LIFE_NOT_SET	RWH_WRITE_LIFE_NOT_SET
 # define RWH_WRITE_LIFE_NONE	1
 # define RWH_WRITE_LIFE_SHORT	2
 # define RWH_WRITE_LIFE_MEDIUM	3

@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2018-2019,2020 Thomas E. Dickey                                *
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
  * Copyright 1998-2016,2017 Free Software Foundation, Inc.                  *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
@@ -33,22 +33,50 @@
  *     and: Thomas E. Dickey                        1996-on                 *
  ****************************************************************************/
 
-/* $Id: curses.h.in,v 1.269 2020/08/17 14:14:12 tom Exp $ */
+/* $Id: curses.h.in,v 1.277 2021/09/24 16:07:37 tom Exp $ */
 
 #ifndef __NCURSES_H
 #define __NCURSES_H
+
+/*
+ The symbols beginning NCURSES_ or USE_ are configuration choices.
+ A few of the former can be overridden by applications at compile-time.
+ Most of the others correspond to configure-script options (or checks
+ by the configure-script for features of the system on which it is built).
+
+ These symbols can be overridden by applications at compile-time:
+ NCURSES_NOMACROS suppresses macro definitions in favor of functions
+ NCURSES_WATTR_MACROS suppresses wattr_* macro definitions
+ NCURSES_WIDECHAR is an alternative for declaring wide-character functions.
+
+ These symbols are used only when building ncurses:
+ NCURSES_ATTR_T
+ NCURSES_FIELD_INTERNALS
+ NCURSES_INTERNALS
+
+ These symbols are set by the configure script:
+ NCURSES_ENABLE_STDBOOL_H
+ NCURSES_EXPANDED
+ NCURSES_EXT_COLORS
+ NCURSES_EXT_FUNCS
+ NCURSES_EXT_PUTWIN
+ NCURSES_NO_PADDING
+ NCURSES_OSPEED_COMPAT
+ NCURSES_PATHSEP
+ NCURSES_REENTRANT
+ */
 
 #define CURSES 1
 #define CURSES_H 1
 
 /* These are defined only in curses.h, and are used for conditional compiles */
 #define NCURSES_VERSION_MAJOR 6
-#define NCURSES_VERSION_MINOR 2
-#define NCURSES_VERSION_PATCH 20201114
+#define NCURSES_VERSION_MINOR 3
+#define NCURSES_VERSION_PATCH 20211021
 
 /* This is defined in more than one ncurses header, for identification */
 #undef  NCURSES_VERSION
-#define NCURSES_VERSION "6.2"
+#define NCURSES_VERSION "6.3"
 
 /*
  * Identify the mouse encoding version.
@@ -60,8 +88,20 @@
  */
 #include <ncurses_dll.h>
 
+/*
+ * Extra headers.
+ */
 #if 1
 #include <stdint.h>
+#endif
+
+#ifdef __cplusplus
+#else
+#if 0
+#include <stdnoreturn.h>
+#undef GCC_NORETURN
+#define GCC_NORETURN _Noreturn
+#endif
 #endif
 
 /*
@@ -391,7 +431,14 @@ extern NCURSES_EXPORT_VAR(chtype) acs_map[];
  */
 #define _NEWINDEX	-1
 
+#ifdef NCURSES_INTERNALS
+#undef SCREEN
+#define SCREEN struct screen
+SCREEN;
+#else
 typedef struct screen  SCREEN;
+#endif
+
 typedef struct _win_st WINDOW;
 
 typedef	chtype	attr_t;		/* ...must be at least as wide as chtype */
@@ -430,7 +477,7 @@ typedef struct
     wchar_t	chars[CCHARW_MAX];
 #if 1
 #undef NCURSES_EXT_COLORS
-#define NCURSES_EXT_COLORS 20201114
+#define NCURSES_EXT_COLORS 20211021
     int		ext_color;	/* color pair, must be more than 16-bits */
 #endif
 }
@@ -510,14 +557,10 @@ struct _win_st
 
 /*
  * We cannot define these in ncurses_cfg.h, since they require parameters to be
- * passed (that is non-portable).  If you happen to be using gcc with warnings
- * enabled, define
- *	GCC_PRINTF
- *	GCC_SCANF
- * to improve checking of calls to printw(), etc.
+ * passed (that is non-portable).
  */
 #ifndef GCC_PRINTFLIKE
-#if defined(GCC_PRINTF) && !defined(printf)
+#ifndef printf
 #define GCC_PRINTFLIKE(fmt,var) __attribute__((format(printf,fmt,var)))
 #else
 #define GCC_PRINTFLIKE(fmt,var) /*nothing*/
@@ -525,7 +568,7 @@ struct _win_st
 #endif
 
 #ifndef GCC_SCANFLIKE
-#if defined(GCC_SCANF) && !defined(scanf)
+#ifndef scanf
 #define GCC_SCANFLIKE(fmt,var)  __attribute__((format(scanf,fmt,var)))
 #else
 #define GCC_SCANFLIKE(fmt,var)  /*nothing*/
@@ -773,10 +816,14 @@ extern NCURSES_EXPORT(void) use_tioctl (bool);				/* implemented */
 extern NCURSES_EXPORT(int) vidattr (chtype);				/* implemented */
 extern NCURSES_EXPORT(int) vidputs (chtype, NCURSES_OUTC);		/* implemented */
 extern NCURSES_EXPORT(int) vline (chtype, int);				/* generated */
-extern NCURSES_EXPORT(int) vwprintw (WINDOW *, const char *,va_list) GCC_DEPRECATED(use vw_printw);	/* implemented */
-extern NCURSES_EXPORT(int) vw_printw (WINDOW *, const char *,va_list);	/* implemented */
-extern NCURSES_EXPORT(int) vwscanw (WINDOW *, const char *,va_list) GCC_DEPRECATED(use vw_scanw);	/* implemented */
-extern NCURSES_EXPORT(int) vw_scanw (WINDOW *, const char *,va_list);	/* implemented */
+extern NCURSES_EXPORT(int) vwprintw (WINDOW *, const char *, va_list) GCC_DEPRECATED(use vw_printw)	/* implemented */
+		GCC_PRINTFLIKE(2,0);
+extern NCURSES_EXPORT(int) vw_printw (WINDOW *, const char *, va_list)	/* implemented */
+		GCC_PRINTFLIKE(2,0);	
+extern NCURSES_EXPORT(int) vwscanw (WINDOW *, const char *, va_list) GCC_DEPRECATED(use vw_scanw)	/* implemented */
+		GCC_SCANFLIKE(2,0);
+extern NCURSES_EXPORT(int) vw_scanw (WINDOW *, const char *, va_list)	/* implemented */
+		GCC_SCANFLIKE(2,0);
 extern NCURSES_EXPORT(int) waddch (WINDOW *, const chtype);		/* implemented */
 extern NCURSES_EXPORT(int) waddchnstr (WINDOW *,const chtype *,int);	/* implemented */
 extern NCURSES_EXPORT(int) waddchstr (WINDOW *,const chtype *);		/* generated */
@@ -875,7 +922,7 @@ extern NCURSES_EXPORT(int) getpary (const WINDOW *);			/* generated */
  */
 #if 1
 #undef  NCURSES_EXT_FUNCS
-#define NCURSES_EXT_FUNCS 20201114
+#define NCURSES_EXT_FUNCS 20211021
 typedef int (*NCURSES_WINDOW_CB)(WINDOW *, void *);
 typedef int (*NCURSES_SCREEN_CB)(SCREEN *, void *);
 extern NCURSES_EXPORT(bool) is_term_resized (int, int);
@@ -937,7 +984,7 @@ extern NCURSES_EXPORT(int) wgetscrreg (const WINDOW *, int *, int *); /* generat
  */
 #if 1
 #undef  NCURSES_SP_FUNCS
-#define NCURSES_SP_FUNCS 20201114
+#define NCURSES_SP_FUNCS 20211021
 #define NCURSES_SP_NAME(name) name##_sp
 
 /* Define the sp-funcs helper function */
@@ -1554,7 +1601,7 @@ extern NCURSES_EXPORT_VAR(int) TABSIZE;
 #endif
 
 #define KEY_MAX		0777		/* Maximum key value is 0632 */
-/* $Id: curses.wide,v 1.50 2017/03/26 16:05:21 tom Exp $ */
+/* $Id: curses.wide,v 1.51 2021/05/22 20:28:29 tom Exp $ */
 /*
  * vile:cmode:
  * This file is part of ncurses, designed to be appended after curses.h.in
@@ -1775,10 +1822,12 @@ extern NCURSES_EXPORT(int) wvline_set (WINDOW *, const cchar_t *, int);	/* imple
 
 #if NCURSES_SP_FUNCS
 extern NCURSES_EXPORT(attr_t) NCURSES_SP_NAME(term_attrs) (SCREEN*);		/* implemented:SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(erasewchar) (SCREEN*, wchar_t *);	/* implemented:SP_FUNC */
+extern NCURSES_EXPORT(int) NCURSES_SP_NAME(killwchar) (SCREEN*, wchar_t *);	/* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(unget_wch) (SCREEN*, const wchar_t);	/* implemented:SP_FUNC */
-extern NCURSES_EXPORT(wchar_t*) NCURSES_SP_NAME(wunctrl) (SCREEN*, cchar_t *);	/* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vid_attr) (SCREEN*, attr_t, NCURSES_PAIRS_T, void *);	/* implemented:SP_FUNC */
 extern NCURSES_EXPORT(int) NCURSES_SP_NAME(vid_puts) (SCREEN*, attr_t, NCURSES_PAIRS_T, void *, NCURSES_SP_OUTC);	/* implemented:SP_FUNC */
+extern NCURSES_EXPORT(wchar_t*) NCURSES_SP_NAME(wunctrl) (SCREEN*, cchar_t *);	/* implemented:SP_FUNC */
 #endif
 
 #ifndef NCURSES_NOMACROS
@@ -1866,7 +1915,7 @@ extern NCURSES_EXPORT(const char *) _nc_viswibuf(const wint_t *);
 #endif
 
 #endif /* NCURSES_WIDECHAR */
-/* $Id: curses.tail,v 1.25 2019/12/14 22:28:39 tom Exp $ */
+/* $Id: curses.tail,v 1.26 2021/03/20 15:49:25 tom Exp $ */
 /*
  * vile:cmode:
  * This file is part of ncurses, designed to be appended after curses.h.in
@@ -2042,7 +2091,7 @@ extern NCURSES_EXPORT(const char *) _nc_visbuf (const char *);
 #define OPTIMIZE_ALL		0xff	/* enable all optimizations (dflt) */
 #endif
 
-extern NCURSES_EXPORT(void) exit_curses (int) GCC_NORETURN;
+extern GCC_NORETURN NCURSES_EXPORT(void) exit_curses (int);
 
 #include <unctrl.h>
 

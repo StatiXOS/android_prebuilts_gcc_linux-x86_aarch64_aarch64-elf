@@ -1,5 +1,5 @@
 /* Define ISO C stdio on top of C++ iostreams.
-   Copyright (C) 1991-2020 Free Software Foundation, Inc.
+   Copyright (C) 1991-2022 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -133,6 +133,12 @@ typedef __fpos64_t fpos64_t;
 #include <bits/stdio_lim.h>
 
 
+#if __GLIBC_USE (ISOC2X)
+/* Maximum length of printf output for a NaN.  */
+# define _PRINTF_NAN_LEN_MAX 4
+#endif
+
+
 /* Standard streams.  */
 extern FILE *stdin;		/* Standard input stream.  */
 extern FILE *stdout;		/* Standard output stream.  */
@@ -165,31 +171,43 @@ extern int renameat2 (int __oldfd, const char *__old, int __newfd,
 		      const char *__new, unsigned int __flags) __THROW;
 #endif
 
+/* Close STREAM.
+
+   This function is a possible cancellation point and therefore not
+   marked with __THROW.  */
+extern int fclose (FILE *__stream);
+
+#undef __attr_dealloc_fclose
+#define __attr_dealloc_fclose __attr_dealloc (fclose, 1)
+
 /* Create a temporary file and open it read/write.
 
    This function is a possible cancellation point and therefore not
    marked with __THROW.  */
 #ifndef __USE_FILE_OFFSET64
-extern FILE *tmpfile (void) __wur;
+extern FILE *tmpfile (void)
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 #else
 # ifdef __REDIRECT
-extern FILE *__REDIRECT (tmpfile, (void), tmpfile64) __wur;
+extern FILE *__REDIRECT (tmpfile, (void), tmpfile64)
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 # else
 #  define tmpfile tmpfile64
 # endif
 #endif
 
 #ifdef __USE_LARGEFILE64
-extern FILE *tmpfile64 (void) __wur;
+extern FILE *tmpfile64 (void)
+   __attribute_malloc__ __attr_dealloc_fclose __wur;
 #endif
 
 /* Generate a temporary filename.  */
-extern char *tmpnam (char *__s) __THROW __wur;
+extern char *tmpnam (char[L_tmpnam]) __THROW __wur;
 
 #ifdef __USE_MISC
 /* This is the reentrant variant of `tmpnam'.  The only difference is
    that it does not allow S to be NULL.  */
-extern char *tmpnam_r (char *__s) __THROW __wur;
+extern char *tmpnam_r (char __s[L_tmpnam]) __THROW __wur;
 #endif
 
 
@@ -202,15 +220,9 @@ extern char *tmpnam_r (char *__s) __THROW __wur;
    P_tmpdir is tried and finally "/tmp".  The storage for the filename
    is allocated by `malloc'.  */
 extern char *tempnam (const char *__dir, const char *__pfx)
-     __THROW __attribute_malloc__ __wur;
+   __THROW __attribute_malloc__ __wur __attr_dealloc_free;
 #endif
 
-
-/* Close STREAM.
-
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-extern int fclose (FILE *__stream);
 /* Flush STREAM, or all streams if STREAM is NULL.
 
    This function is a possible cancellation point and therefore not
@@ -244,7 +256,8 @@ extern int fcloseall (void);
    This function is a possible cancellation point and therefore not
    marked with __THROW.  */
 extern FILE *fopen (const char *__restrict __filename,
-		    const char *__restrict __modes) __wur;
+		    const char *__restrict __modes)
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 /* Open a file, replacing an existing stream with it.
 
    This function is a possible cancellation point and therefore not
@@ -256,7 +269,7 @@ extern FILE *freopen (const char *__restrict __filename,
 # ifdef __REDIRECT
 extern FILE *__REDIRECT (fopen, (const char *__restrict __filename,
 				 const char *__restrict __modes), fopen64)
-  __wur;
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 extern FILE *__REDIRECT (freopen, (const char *__restrict __filename,
 				   const char *__restrict __modes,
 				   FILE *__restrict __stream), freopen64)
@@ -268,7 +281,8 @@ extern FILE *__REDIRECT (freopen, (const char *__restrict __filename,
 #endif
 #ifdef __USE_LARGEFILE64
 extern FILE *fopen64 (const char *__restrict __filename,
-		      const char *__restrict __modes) __wur;
+		      const char *__restrict __modes)
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 extern FILE *freopen64 (const char *__restrict __filename,
 			const char *__restrict __modes,
 			FILE *__restrict __stream) __wur;
@@ -276,7 +290,8 @@ extern FILE *freopen64 (const char *__restrict __filename,
 
 #ifdef	__USE_POSIX
 /* Create a new stream that refers to an existing system file descriptor.  */
-extern FILE *fdopen (int __fd, const char *__modes) __THROW __wur;
+extern FILE *fdopen (int __fd, const char *__modes) __THROW
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 #endif
 
 #ifdef	__USE_GNU
@@ -284,20 +299,29 @@ extern FILE *fdopen (int __fd, const char *__modes) __THROW __wur;
    and uses the given functions for input and output.  */
 extern FILE *fopencookie (void *__restrict __magic_cookie,
 			  const char *__restrict __modes,
-			  cookie_io_functions_t __io_funcs) __THROW __wur;
+			  cookie_io_functions_t __io_funcs) __THROW
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 #endif
 
 #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
 /* Create a new stream that refers to a memory buffer.  */
 extern FILE *fmemopen (void *__s, size_t __len, const char *__modes)
-  __THROW __wur;
+  __THROW __attribute_malloc__ __attr_dealloc_fclose __wur;
 
 /* Open a stream that writes into a malloc'd buffer that is expanded as
    necessary.  *BUFLOC and *SIZELOC are updated with the buffer's location
    and the number of characters written on fflush or fclose.  */
-extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) __THROW __wur;
-#endif
+extern FILE *open_memstream (char **__bufloc, size_t *__sizeloc) __THROW
+  __attribute_malloc__ __attr_dealloc_fclose __wur;
 
+#ifdef _WCHAR_H
+/* Like OPEN_MEMSTREAM, but the stream is wide oriented and produces
+   a wide character string.  Declared here only to add attribute malloc
+   and only if <wchar.h> has been previously #included.  */
+extern __FILE *open_wmemstream (wchar_t **__bufloc, size_t *__sizeloc) __THROW
+  __attribute_malloc__ __attr_dealloc_fclose;
+# endif
+#endif
 
 /* If BUF is NULL, make STREAM unbuffered.
    Else make it use buffer BUF, of size BUFSIZ.  */
@@ -400,9 +424,12 @@ extern int sscanf (const char *__restrict __s,
 		   const char *__restrict __format, ...) __THROW;
 
 /* For historical reasons, the C99-compliant versions of the scanf
-   functions are at alternative names.  When __LDBL_COMPAT is in
-   effect, this is handled in bits/stdio-ldbl.h.  */
-#if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT
+   functions are at alternative names.  When __LDBL_COMPAT or
+   __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI are in effect, this is handled in
+   bits/stdio-ldbl.h.  */
+#include <bits/floatn.h>
+#if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT \
+    && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
 # ifdef __REDIRECT
 extern int __REDIRECT (fscanf, (FILE *__restrict __stream,
 				const char *__restrict __format, ...),
@@ -447,7 +474,8 @@ extern int vsscanf (const char *__restrict __s,
 
 /* Same redirection as above for the v*scanf family.  */
 # if !__GLIBC_USE (DEPRECATED_SCANF)
-#  if defined __REDIRECT && !defined __LDBL_COMPAT
+#  if defined __REDIRECT && !defined __LDBL_COMPAT \
+      && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
 extern int __REDIRECT (vfscanf,
 		       (FILE *__restrict __s,
 			const char *__restrict __format, __gnuc_va_list __arg),
@@ -562,7 +590,7 @@ extern int putw (int __w, FILE *__stream);
    This function is a possible cancellation point and therefore not
    marked with __THROW.  */
 extern char *fgets (char *__restrict __s, int __n, FILE *__restrict __stream)
-     __wur;
+     __wur __fortified_attr_access (__write_only__, 1, 2);
 
 #if __GLIBC_USE (DEPRECATED_GETS)
 /* Get a newline-terminated string from stdin, removing the newline.
@@ -585,7 +613,8 @@ extern char *gets (char *__s) __wur __attribute_deprecated__;
    or due to the implementation it is a cancellation point and
    therefore not marked with __THROW.  */
 extern char *fgets_unlocked (char *__restrict __s, int __n,
-			     FILE *__restrict __stream) __wur;
+			     FILE *__restrict __stream) __wur
+    __fortified_attr_access (__write_only__, 1, 2);
 #endif
 
 
@@ -774,12 +803,6 @@ extern int ferror_unlocked (FILE *__stream) __THROW __wur;
    marked with __THROW.  */
 extern void perror (const char *__s);
 
-/* Provide the declarations for `sys_errlist' and `sys_nerr' if they
-   are available on this system.  Even if available, these variables
-   should not be used directly.  The `strerror' function provides
-   all the necessary functionality.  */
-#include <bits/sys_errlist.h>
-
 
 #ifdef	__USE_POSIX
 /* Return the system file descriptor for STREAM.  */
@@ -793,29 +816,33 @@ extern int fileno_unlocked (FILE *__stream) __THROW __wur;
 
 
 #ifdef __USE_POSIX2
-/* Create a new stream connected to a pipe running the given command.
-
-   This function is a possible cancellation point and therefore not
-   marked with __THROW.  */
-extern FILE *popen (const char *__command, const char *__modes) __wur;
-
 /* Close a stream opened by popen and return the status of its child.
 
    This function is a possible cancellation point and therefore not
    marked with __THROW.  */
 extern int pclose (FILE *__stream);
+
+/* Create a new stream connected to a pipe running the given command.
+
+   This function is a possible cancellation point and therefore not
+   marked with __THROW.  */
+extern FILE *popen (const char *__command, const char *__modes)
+  __attribute_malloc__ __attr_dealloc (pclose, 1) __wur;
+
 #endif
 
 
 #ifdef	__USE_POSIX
 /* Return the name of the controlling terminal.  */
-extern char *ctermid (char *__s) __THROW;
+extern char *ctermid (char *__s) __THROW
+  __attr_access ((__write_only__, 1));
 #endif /* Use POSIX.  */
 
 
 #if (defined __USE_XOPEN && !defined __USE_XOPEN2K) || defined __USE_GNU
 /* Return the name of the current user.  */
-extern char *cuserid (char *__s);
+extern char *cuserid (char *__s)
+  __attr_access ((__write_only__, 1));
 #endif /* Use X/Open, but not issue 6.  */
 
 
@@ -866,7 +893,9 @@ extern int __overflow (FILE *, int);
 #if __USE_FORTIFY_LEVEL > 0 && defined __fortify_function
 # include <bits/stdio2.h>
 #endif
-#ifdef __LDBL_COMPAT
+
+#include <bits/floatn.h>
+#if defined __LDBL_COMPAT || __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 1
 # include <bits/stdio-ldbl.h>
 #endif
 

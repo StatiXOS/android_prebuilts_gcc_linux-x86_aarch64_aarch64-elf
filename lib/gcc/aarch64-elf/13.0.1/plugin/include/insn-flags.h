@@ -7059,10 +7059,6 @@
 #define HAVE_tbranch_neqi3 1
 #define HAVE_tbranch_eqhi3 1
 #define HAVE_tbranch_nehi3 1
-#define HAVE_tbranch_eqsi3 1
-#define HAVE_tbranch_nesi3 1
-#define HAVE_tbranch_eqdi3 1
-#define HAVE_tbranch_nedi3 1
 #define HAVE_call 1
 #define HAVE_call_value 1
 #define HAVE_sibcall 1
@@ -7869,9 +7865,6 @@
 #define HAVE_aarch64_raddhn2v2di (TARGET_SIMD)
 #define HAVE_aarch64_subhn2v2di (TARGET_SIMD)
 #define HAVE_aarch64_rsubhn2v2di (TARGET_SIMD)
-#define HAVE_aarch64_bitmask_udivv8hi3 (TARGET_SIMD)
-#define HAVE_aarch64_bitmask_udivv4si3 (TARGET_SIMD)
-#define HAVE_aarch64_bitmask_udivv2di3 (TARGET_SIMD)
 #define HAVE_aarch64_pmull_hiv16qi (TARGET_SIMD)
 #define HAVE_aarch64_sqmovnv8hi (TARGET_SIMD)
 #define HAVE_aarch64_uqmovnv8hi (TARGET_SIMD)
@@ -10236,9 +10229,6 @@
 #define HAVE_cond_flogbvnx8hf (TARGET_SVE2)
 #define HAVE_cond_flogbvnx4sf (TARGET_SVE2)
 #define HAVE_cond_flogbvnx2df (TARGET_SVE2)
-#define HAVE_aarch64_bitmask_udivvnx8hi3 (TARGET_SVE2)
-#define HAVE_aarch64_bitmask_udivvnx4si3 (TARGET_SVE2)
-#define HAVE_aarch64_bitmask_udivvnx2di3 (TARGET_SVE2)
 #define HAVE_check_raw_ptrssi (TARGET_SVE2)
 #define HAVE_check_war_ptrssi (TARGET_SVE2)
 #define HAVE_check_raw_ptrsdi (TARGET_SVE2)
@@ -18283,10 +18273,6 @@ extern rtx        gen_tbranch_eqqi3                                  (rtx, rtx, 
 extern rtx        gen_tbranch_neqi3                                  (rtx, rtx, rtx);
 extern rtx        gen_tbranch_eqhi3                                  (rtx, rtx, rtx);
 extern rtx        gen_tbranch_nehi3                                  (rtx, rtx, rtx);
-extern rtx        gen_tbranch_eqsi3                                  (rtx, rtx, rtx);
-extern rtx        gen_tbranch_nesi3                                  (rtx, rtx, rtx);
-extern rtx        gen_tbranch_eqdi3                                  (rtx, rtx, rtx);
-extern rtx        gen_tbranch_nedi3                                  (rtx, rtx, rtx);
 extern rtx        gen_call                                           (rtx, rtx, rtx);
 extern rtx        gen_call_value                                     (rtx, rtx, rtx, rtx);
 extern rtx        gen_sibcall                                        (rtx, rtx, rtx);
@@ -19085,9 +19071,6 @@ extern rtx        gen_aarch64_addhn2v2di                             (rtx, rtx, 
 extern rtx        gen_aarch64_raddhn2v2di                            (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_subhn2v2di                             (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_rsubhn2v2di                            (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivv8hi3                      (rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivv4si3                      (rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivv2di3                      (rtx, rtx, rtx);
 extern rtx        gen_aarch64_pmull_hiv16qi                          (rtx, rtx, rtx);
 extern rtx        gen_aarch64_sqmovnv8hi                             (rtx, rtx);
 extern rtx        gen_aarch64_uqmovnv8hi                             (rtx, rtx);
@@ -23420,9 +23403,6 @@ extern rtx        gen_cond_ursqrtevnx4si                             (rtx, rtx, 
 extern rtx        gen_cond_flogbvnx8hf                               (rtx, rtx, rtx, rtx);
 extern rtx        gen_cond_flogbvnx4sf                               (rtx, rtx, rtx, rtx);
 extern rtx        gen_cond_flogbvnx2df                               (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivvnx8hi3                    (rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivvnx4si3                    (rtx, rtx, rtx);
-extern rtx        gen_aarch64_bitmask_udivvnx2di3                    (rtx, rtx, rtx);
 extern rtx        gen_check_raw_ptrssi                               (rtx, rtx, rtx, rtx, rtx);
 extern rtx        gen_check_war_ptrssi                               (rtx, rtx, rtx, rtx, rtx);
 extern rtx        gen_check_raw_ptrsdi                               (rtx, rtx, rtx, rtx, rtx);

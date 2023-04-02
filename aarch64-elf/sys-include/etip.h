@@ -1,6 +1,6 @@
 // * This makes emacs happy -*-Mode: C++;-*-
 /****************************************************************************
- * Copyright 2018,2020 Thomas E. Dickey                                     *
+ * Copyright 2018-2020,2021 Thomas E. Dickey                                *
  * Copyright 1998-2012,2017 Free Software Foundation, Inc.                  *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
@@ -32,7 +32,7 @@
  *   Author: Juergen Pfeifer, 1997                                          *
  ****************************************************************************/
 
-// $Id: etip.h.in,v 1.45 2020/05/24 01:40:20 anonymous.maarten Exp $
+// $Id: etip.h.in,v 1.48 2021/06/17 21:11:08 tom Exp $
 
 #ifndef NCURSES_ETIP_H_incl
 #define NCURSES_ETIP_H_incl 1
@@ -139,6 +139,10 @@ extern "C" {
 #define STATIC_CAST(s) (s)
 #endif
 
+#ifndef NCURSES_CXX_IMPEXP
+#define NCURSES_CXX_IMPEXP  /* nothing */
+#endif
+
 // Forward Declarations
 class NCURSES_CXX_IMPEXP NCursesPanel;
 class NCURSES_CXX_IMPEXP NCursesMenu;
@@ -154,12 +158,13 @@ public:
     : message(msg), errorno (err)
     {};
 
-  NCursesException (const char* msg)
+  explicit NCursesException (const char* msg)
     : message(msg), errorno (E_SYSTEM_ERROR)
     {};
 
   NCursesException& operator=(const NCursesException& rhs)
   {
+    message = rhs.message;
     errorno = rhs.errorno;
     return *this;
   }
@@ -195,7 +200,7 @@ public:
     p (panel)
     {};
 
-  NCursesPanelException (int err) :
+  explicit NCursesPanelException (int err) :
     NCursesException ("panel library error", err),
     p (0)
     {};
@@ -246,7 +251,7 @@ public:
     m (menu)
     {};
 
-  NCursesMenuException (int err) :
+  explicit NCursesMenuException (int err) :
     NCursesException ("menu library error", err),
     m (0)
     {};
@@ -297,7 +302,7 @@ public:
     f (form)
     {};
 
-  NCursesFormException (int err) :
+  explicit NCursesFormException (int err) :
     NCursesException ("form library error", err),
     f (0)
     {};
