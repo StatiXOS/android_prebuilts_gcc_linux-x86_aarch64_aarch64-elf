@@ -26,7 +26,7 @@
 #ifndef _HYPERV_H
 #define _HYPERV_H
 
-#include <linux/types.h>
+#include <linux/uuid.h>
 
 /*
  * Framework version for util services.

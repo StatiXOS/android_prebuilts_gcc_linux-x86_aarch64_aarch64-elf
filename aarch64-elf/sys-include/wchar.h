@@ -1,4 +1,4 @@
-/* Copyright (C) 1995-2022 Free Software Foundation, Inc.
+/* Copyright (C) 1995-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -151,8 +151,7 @@ extern size_t wcsxfrm_l (wchar_t *__s1, const wchar_t *__s2,
 			 size_t __n, locale_t __loc) __THROW;
 
 /* Duplicate S, returning an identical malloc'd string.  */
-extern wchar_t *wcsdup (const wchar_t *__s) __THROW
-  __attribute_malloc__ __attr_dealloc_free;
+extern wchar_t *wcsdup (const wchar_t *__s) __THROW __attribute_malloc__;
 #endif
 
 /* Find the first occurrence of WC in WCS.  */
@@ -563,23 +562,9 @@ extern wchar_t *wcpncpy (wchar_t *__restrict __dest,
 /* Wide character I/O functions.  */
 
 #if defined __USE_XOPEN2K8 || __GLIBC_USE (LIB_EXT2)
-# ifndef __attr_dealloc_fclose
-#   if defined __has_builtin
-#     if __has_builtin (__builtin_fclose)
-/* If the attribute macro hasn't been defined yet (by <stdio.h>) and
-   fclose is a built-in, use it.  */
-#      define __attr_dealloc_fclose __attr_dealloc (__builtin_fclose, 1)
-#     endif
-#   endif
-# endif
-# ifndef __attr_dealloc_fclose
-#  define __attr_dealloc_fclose /* empty */
-# endif
-
 /* Like OPEN_MEMSTREAM, but the stream is wide oriented and produces
    a wide character string.  */
-extern __FILE *open_wmemstream (wchar_t **__bufloc, size_t *__sizeloc) __THROW
-  __attribute_malloc__ __attr_dealloc_fclose;
+extern __FILE *open_wmemstream (wchar_t **__bufloc, size_t *__sizeloc) __THROW;
 #endif
 
 #if defined __USE_ISOC95 || defined __USE_UNIX98
@@ -648,11 +633,9 @@ extern int swscanf (const wchar_t *__restrict __s,
      __THROW /* __attribute__ ((__format__ (__wscanf__, 2, 3))) */;
 
 /* For historical reasons, the C99-compliant versions of the scanf
-   functions are at alternative names.  When __LDBL_COMPAT or
-   __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI are in effect, this is handled in
-   bits/wchar-ldbl.h.  */
-#if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT \
-     && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
+   functions are at alternative names.  When __LDBL_COMPAT is in
+   effect, this is handled in bits/wchar-ldbl.h.  */
+#if !__GLIBC_USE (DEPRECATED_SCANF) && !defined __LDBL_COMPAT
 #  ifdef __REDIRECT
 extern int __REDIRECT (fwscanf, (__FILE *__restrict __stream,
 				 const wchar_t *__restrict __format, ...),
@@ -705,8 +688,7 @@ extern int vswscanf (const wchar_t *__restrict __s,
 /* Same redirection as above for the v*wscanf family.  */
 # if !__GLIBC_USE (DEPRECATED_SCANF) \
      && (!defined __LDBL_COMPAT || !defined __REDIRECT) \
-     && (defined __STRICT_ANSI__ || defined __USE_XOPEN2K) \
-     && __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 0
+     && (defined __STRICT_ANSI__ || defined __USE_XOPEN2K)
 #  ifdef __REDIRECT
 extern int __REDIRECT (vfwscanf, (__FILE *__restrict __s,
 				  const wchar_t *__restrict __format,
@@ -867,8 +849,7 @@ extern size_t wcsftime_l (wchar_t *__restrict __s, size_t __maxsize,
 # include <bits/wchar2.h>
 #endif
 
-#include <bits/floatn.h>
-#if defined __LDBL_COMPAT || __LDOUBLE_REDIRECTS_TO_FLOAT128_ABI == 1
+#ifdef __LDBL_COMPAT
 # include <bits/wchar-ldbl.h>
 #endif
 

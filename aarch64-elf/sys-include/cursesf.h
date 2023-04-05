@@ -1,7 +1,6 @@
 // * This makes emacs happy -*-Mode: C++;-*-
-// vile:cppmode
 /****************************************************************************
- * Copyright 2019-2020,2021 Thomas E. Dickey                                *
+ * Copyright 2019,2020 Thomas E. Dickey                                     *
  * Copyright 1998-2012,2014 Free Software Foundation, Inc.                  *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
@@ -33,7 +32,7 @@
  *   Author: Juergen Pfeifer, 1997                                          *
  ****************************************************************************/
 
-// $Id: cursesf.h,v 1.38 2021/04/17 18:11:08 tom Exp $
+// $Id: cursesf.h,v 1.37 2020/07/18 19:57:11 anonymous.maarten Exp $
 
 #ifndef NCURSES_CURSESF_H_incl
 #define NCURSES_CURSESF_H_incl 1
@@ -732,7 +731,7 @@ private:
   }
 
 public:
-  explicit Alpha_Field(int width)
+  Alpha_Field(int width)
     : NCursesFieldType(TYPE_ALPHA),
       min_field_width(width) {
   }
@@ -748,7 +747,7 @@ private:
   }
 
 public:
-  explicit Alphanumeric_Field(int width)
+  Alphanumeric_Field(int width)
     : NCursesFieldType(TYPE_ALNUM),
       min_field_width(width) {
   }
@@ -806,7 +805,7 @@ private:
   }
 
 public:
-  explicit Regular_Expression_Field(const char *expr)
+  Regular_Expression_Field(const char *expr)
     : NCursesFieldType(TYPE_REGEXP),
       regex(NULL)
   {

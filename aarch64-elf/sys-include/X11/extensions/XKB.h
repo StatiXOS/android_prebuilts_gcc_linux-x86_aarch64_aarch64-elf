@@ -141,7 +141,7 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
     /*
      * Miscellaneous event details:
-     * - event detail masks for assorted events that don't really
+     * - event detail masks for assorted events that don't reall
      *   have any details.
      */
 #define	XkbAllStateEventsMask		XkbAllStateComponentsMask

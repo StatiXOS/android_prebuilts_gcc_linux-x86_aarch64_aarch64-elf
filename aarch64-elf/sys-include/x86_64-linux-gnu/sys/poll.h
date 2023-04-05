@@ -1,5 +1,5 @@
 /* Compatibility definitions for System V `poll' interface.
-   Copyright (C) 1994-2022 Free Software Foundation, Inc.
+   Copyright (C) 1994-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -51,8 +51,7 @@ __BEGIN_DECLS
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-extern int poll (struct pollfd *__fds, nfds_t __nfds, int __timeout)
-    __fortified_attr_access (__write_only__, 1, 2);
+extern int poll (struct pollfd *__fds, nfds_t __nfds, int __timeout);
 
 #ifdef __USE_GNU
 /* Like poll, but before waiting the threads signal mask is replaced
@@ -63,20 +62,7 @@ extern int poll (struct pollfd *__fds, nfds_t __nfds, int __timeout)
    __THROW.  */
 extern int ppoll (struct pollfd *__fds, nfds_t __nfds,
 		  const struct timespec *__timeout,
-		  const __sigset_t *__ss)
-    __fortified_attr_access (__write_only__, 1, 2);
-
-# ifdef __USE_TIME_BITS64
-#  ifdef __REDIRECT
-extern int __REDIRECT (ppoll, (struct pollfd *__fds, nfds_t __nfds,
-                               const struct timespec *__timeout,
-                               const __sigset_t *__ss),
-                       __ppoll64)
-    __fortified_attr_access (__write_only__, 1, 2);
-#  else
-#  define ppoll __ppoll64
-#  endif
-# endif
+		  const __sigset_t *__ss);
 #endif
 
 __END_DECLS

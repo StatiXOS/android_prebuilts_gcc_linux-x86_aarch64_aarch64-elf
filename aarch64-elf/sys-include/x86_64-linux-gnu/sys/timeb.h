@@ -1,4 +1,4 @@
-/* Copyright (C) 1994-2022 Free Software Foundation, Inc.
+/* Copyright (C) 1994-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -20,15 +20,24 @@
 
 #include <features.h>
 
+#include <bits/types/time_t.h>
+
 __BEGIN_DECLS
 
-# include <bits/types/struct_timeb.h>
+/* Structure returned by the `ftime' function.  */
+
+struct timeb
+  {
+    time_t time;		/* Seconds since epoch, as from `time'.  */
+    unsigned short int millitm;	/* Additional milliseconds.  */
+    short int timezone;		/* Minutes west of GMT.  */
+    short int dstflag;		/* Nonzero if Daylight Savings Time used.  */
+  };
 
 /* Fill in TIMEBUF with information about the current time.  */
 
 extern int ftime (struct timeb *__timebuf)
-  __nonnull ((1))
-  __attribute_deprecated_msg__ ("Use gettimeofday or clock_gettime instead");
+  __nonnull ((1)) __attribute_deprecated__;
 
 __END_DECLS
 

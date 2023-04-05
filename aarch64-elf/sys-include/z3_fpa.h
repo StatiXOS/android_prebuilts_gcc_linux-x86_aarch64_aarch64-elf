@@ -961,8 +961,7 @@ extern "C" {
 
         \param c logical context
         \param t a floating-point numeral
-        \param sgn the retrieved sign
-        \returns true if \c t corresponds to a floating point numeral, otherwise invokes exception handler or returns false
+        \param sgn sign
 
         Remarks: sets \c sgn to 0 if `t' is positive and to 1 otherwise, except for
         NaN, which is an invalid argument.
@@ -976,7 +975,6 @@ extern "C" {
 
         \param c logical context
         \param t a floating-point numeral
-        \returns true if \c t corresponds to a floating point numeral, otherwise invokes exception handler or returns false
 
         Remarks: The significand \c s is always \ccode{0.0 <= s < 2.0}; the resulting string is long
         enough to represent the real significand precisely.
@@ -1006,7 +1004,6 @@ extern "C" {
         \param c logical context
         \param t a floating-point numeral
         \param biased flag to indicate whether the result is in biased representation
-        \returns true if \c t corresponds to a floating point numeral, otherwise invokes exception handler or returns false
 
         Remarks: This function extracts the exponent in `t`, without normalization.
         NaN is an invalid argument.
@@ -1022,7 +1019,6 @@ extern "C" {
         \param t a floating-point numeral
         \param n exponent
         \param biased flag to indicate whether the result is in biased representation
-        \returns true if \c t corresponds to a floating point numeral, otherwise invokes exception handler or returns false
 
         Remarks: This function extracts the exponent in `t`, without normalization.
         NaN is an invalid argument.

@@ -27,7 +27,6 @@ THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #ifndef _XKBSTR_H_
 #define	_XKBSTR_H_
 
-#include <X11/Xfuncproto.h>
 #include <X11/extensions/XKB.h>
 
 #define	XkbCharToInt(v)		((v)&0x80?(int)((v)|(~0xff)):(int)((v)&0x7f))
@@ -402,12 +401,12 @@ typedef struct _XkbIndicatorRec {
 } XkbIndicatorRec,*XkbIndicatorPtr;
 
 typedef	struct _XkbKeyNameRec {
-	char	name[XkbKeyNameLength]	_X_NONSTRING;
+	char	name[XkbKeyNameLength];
 } XkbKeyNameRec,*XkbKeyNamePtr;
 
 typedef struct _XkbKeyAliasRec {
-	char	real[XkbKeyNameLength]	_X_NONSTRING;
-	char	alias[XkbKeyNameLength]	_X_NONSTRING;
+	char	real[XkbKeyNameLength];
+	char	alias[XkbKeyNameLength];
 } XkbKeyAliasRec,*XkbKeyAliasPtr;
 
 	/*

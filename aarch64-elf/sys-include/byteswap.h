@@ -1,5 +1,4 @@
-/* Swap byte order for 16, 32 and 64 bit values
-   Copyright (C) 1997-2022 Free Software Foundation, Inc.
+/* Copyright (C) 1997-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -25,10 +24,10 @@
 #include <bits/byteswap.h>
 
 
-/* The following definitions must all be macros, otherwise some
+/* The following definitions must all be macros since otherwise some
    of the possible optimizations are not possible.  */
 
-/* Return a value with both bytes in the 16 bit argument swapped.  */
+/* Return a value with all bytes in the 16 bit argument swapped.  */
 #define bswap_16(x) __bswap_16 (x)
 
 /* Return a value with all bytes in the 32 bit argument swapped.  */

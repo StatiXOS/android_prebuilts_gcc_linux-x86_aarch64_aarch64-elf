@@ -1,11 +1,11 @@
 /* Generated at libc build time from syscall list.  */
-/* The system call list corresponds to kernel 5.16.  */
+/* The system call list corresponds to kernel 5.5.  */
 
 #ifndef _SYSCALL_H
 # error "Never use <bits/syscall.h> directly; include <sys/syscall.h> instead."
 #endif
 
-#define __GLIBC_LINUX_VERSION_CODE 331776
+#define __GLIBC_LINUX_VERSION_CODE 328960
 
 #ifdef __NR_FAST_atomic_update
 # define SYS_FAST_atomic_update __NR_FAST_atomic_update
@@ -73,18 +73,6 @@
 
 #ifdef __NR_alloc_hugepages
 # define SYS_alloc_hugepages __NR_alloc_hugepages
-#endif
-
-#ifdef __NR_arc_gettls
-# define SYS_arc_gettls __NR_arc_gettls
-#endif
-
-#ifdef __NR_arc_settls
-# define SYS_arc_settls __NR_arc_settls
-#endif
-
-#ifdef __NR_arc_usr_cmpxchg
-# define SYS_arc_usr_cmpxchg __NR_arc_usr_cmpxchg
 #endif
 
 #ifdef __NR_arch_prctl
@@ -227,10 +215,6 @@
 # define SYS_close __NR_close
 #endif
 
-#ifdef __NR_close_range
-# define SYS_close_range __NR_close_range
-#endif
-
 #ifdef __NR_cmpxchg_badaddr
 # define SYS_cmpxchg_badaddr __NR_cmpxchg_badaddr
 #endif
@@ -291,10 +275,6 @@
 # define SYS_epoll_pwait __NR_epoll_pwait
 #endif
 
-#ifdef __NR_epoll_pwait2
-# define SYS_epoll_pwait2 __NR_epoll_pwait2
-#endif
-
 #ifdef __NR_epoll_wait
 # define SYS_epoll_wait __NR_epoll_wait
 #endif
@@ -337,10 +317,6 @@
 
 #ifdef __NR_faccessat
 # define SYS_faccessat __NR_faccessat
-#endif
-
-#ifdef __NR_faccessat2
-# define SYS_faccessat2 __NR_faccessat2
 #endif
 
 #ifdef __NR_fadvise64
@@ -493,10 +469,6 @@
 
 #ifdef __NR_futex_time64
 # define SYS_futex_time64 __NR_futex_time64
-#endif
-
-#ifdef __NR_futex_waitv
-# define SYS_futex_waitv __NR_futex_waitv
 #endif
 
 #ifdef __NR_futimesat
@@ -811,18 +783,6 @@
 # define SYS_kill __NR_kill
 #endif
 
-#ifdef __NR_landlock_add_rule
-# define SYS_landlock_add_rule __NR_landlock_add_rule
-#endif
-
-#ifdef __NR_landlock_create_ruleset
-# define SYS_landlock_create_ruleset __NR_landlock_create_ruleset
-#endif
-
-#ifdef __NR_landlock_restrict_self
-# define SYS_landlock_restrict_self __NR_landlock_restrict_self
-#endif
-
 #ifdef __NR_lchown
 # define SYS_lchown __NR_lchown
 #endif
@@ -903,10 +863,6 @@
 # define SYS_memfd_create __NR_memfd_create
 #endif
 
-#ifdef __NR_memfd_secret
-# define SYS_memfd_secret __NR_memfd_secret
-#endif
-
 #ifdef __NR_memory_ordering
 # define SYS_memory_ordering __NR_memory_ordering
 #endif
@@ -961,10 +917,6 @@
 
 #ifdef __NR_mount
 # define SYS_mount __NR_mount
-#endif
-
-#ifdef __NR_mount_setattr
-# define SYS_mount_setattr __NR_mount_setattr
 #endif
 
 #ifdef __NR_move_mount
@@ -1125,14 +1077,6 @@
 
 #ifdef __NR_openat
 # define SYS_openat __NR_openat
-#endif
-
-#ifdef __NR_openat2
-# define SYS_openat2 __NR_openat2
-#endif
-
-#ifdef __NR_or1k_atomic
-# define SYS_or1k_atomic __NR_or1k_atomic
 #endif
 
 #ifdef __NR_osf_adjtime
@@ -1607,10 +1551,6 @@
 # define SYS_personality __NR_personality
 #endif
 
-#ifdef __NR_pidfd_getfd
-# define SYS_pidfd_getfd __NR_pidfd_getfd
-#endif
-
 #ifdef __NR_pidfd_open
 # define SYS_pidfd_open __NR_pidfd_open
 #endif
@@ -1675,14 +1615,6 @@
 # define SYS_prlimit64 __NR_prlimit64
 #endif
 
-#ifdef __NR_process_madvise
-# define SYS_process_madvise __NR_process_madvise
-#endif
-
-#ifdef __NR_process_mrelease
-# define SYS_process_mrelease __NR_process_mrelease
-#endif
-
 #ifdef __NR_process_vm_readv
 # define SYS_process_vm_readv __NR_process_vm_readv
 #endif
@@ -1733,10 +1665,6 @@
 
 #ifdef __NR_quotactl
 # define SYS_quotactl __NR_quotactl
-#endif
-
-#ifdef __NR_quotactl_fd
-# define SYS_quotactl_fd __NR_quotactl_fd
 #endif
 
 #ifdef __NR_read

@@ -1,5 +1,5 @@
 /* Header file for mounting/unmount Linux filesystems.
-   Copyright (C) 1996-2022 Free Software Foundation, Inc.
+   Copyright (C) 1996-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -48,8 +48,6 @@ enum
 #define MS_MANDLOCK	MS_MANDLOCK
   MS_DIRSYNC = 128,		/* Directory modifications are synchronous.  */
 #define MS_DIRSYNC	MS_DIRSYNC
-  MS_NOSYMFOLLOW = 256,		/* Do not follow symlinks.  */
-#define MS_NOSYMFOLLOW	MS_NOSYMFOLLOW
   MS_NOATIME = 1024,		/* Do not update access times.  */
 #define MS_NOATIME	MS_NOATIME
   MS_NODIRATIME = 2048,		/* Do not update directory access times.  */

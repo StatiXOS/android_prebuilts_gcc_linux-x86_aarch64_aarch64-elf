@@ -1,4 +1,4 @@
-/* Copyright (C) 1991-2022 Free Software Foundation, Inc.
+/* Copyright (C) 1991-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -144,30 +144,17 @@ typedef __pid_t pid_t;
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-#ifndef __USE_TIME_BITS64
-# ifndef __USE_FILE_OFFSET64
+#ifndef __USE_FILE_OFFSET64
 extern int fcntl (int __fd, int __cmd, ...);
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT (fcntl, (int __fd, int __cmd, ...), fcntl64);
-#  else
-#   define fcntl fcntl64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int fcntl64 (int __fd, int __cmd, ...);
-# endif
-#else /* __USE_TIME_BITS64 */
+#else
 # ifdef __REDIRECT
-extern int __REDIRECT_NTH (fcntl, (int __fd, int __request, ...),
-			   __fcntl_time64);
-extern int __REDIRECT_NTH (fcntl64, (int __fd, int __request, ...),
-			   __fcntl_time64);
+extern int __REDIRECT (fcntl, (int __fd, int __cmd, ...), fcntl64);
 # else
-extern int __fcntl_time64 (int __fd, int __request, ...) __THROW;
-#  define fcntl64 __fcntl_time64
-#  define fcntl __fcntl_time64
+#  define fcntl fcntl64
 # endif
+#endif
+#ifdef __USE_LARGEFILE64
+extern int fcntl64 (int __fd, int __cmd, ...);
 #endif
 
 /* Open FILE and return a new file descriptor for it, or -1 on error.

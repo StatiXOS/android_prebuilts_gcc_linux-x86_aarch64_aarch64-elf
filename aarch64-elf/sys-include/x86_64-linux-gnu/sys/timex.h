@@ -1,4 +1,4 @@
-/* Copyright (C) 1995-2022 Free Software Foundation, Inc.
+/* Copyright (C) 1995-2020 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -54,34 +54,17 @@ struct ntptimeval
 
 __BEGIN_DECLS
 
-#ifndef __USE_TIME_BITS64
+extern int __adjtimex (struct timex *__ntx) __THROW;
 extern int adjtimex (struct timex *__ntx) __THROW;
-extern int ntp_gettimex (struct ntptimeval *__ntv) __THROW;
 
-# ifdef __REDIRECT_NTH
+#ifdef __REDIRECT_NTH
 extern int __REDIRECT_NTH (ntp_gettime, (struct ntptimeval *__ntv),
-                           ntp_gettimex);
-# else
-#  define ntp_gettime ntp_gettimex
-# endif
-extern int ntp_adjtime (struct timex *__tntx) __THROW;
+			   ntp_gettimex);
 #else
-# ifdef __REDIRECT_NTH
-extern int __REDIRECT_NTH (adjtimex, (struct timex *__ntx),
-                           ___adjtimex64);
-extern int __REDIRECT_NTH (ntp_gettime, (struct ntptimeval *__ntv),
-                           __ntp_gettime64);
-extern int __REDIRECT_NTH (ntp_gettimex, (struct ntptimeval *__ntv),
-                           __ntp_gettimex64);
-extern int __REDIRECT_NTH (ntp_adjtime, (struct timex *__ntx),
-                           ___adjtimex64);
-# else
-#  define adjtimex ___adjtimex64
-#  define ntp_adjtime ___adjtimex64
-#  define ntp_gettime __ntp_gettime64
-#  define ntp_gettimex __ntp_gettimex64
-# endif
+extern int ntp_gettimex (struct ntptimeval *__ntv) __THROW;
+# define ntp_gettime ntp_gettimex
 #endif
+extern int ntp_adjtime (struct timex *__tntx) __THROW;
 
 __END_DECLS
 

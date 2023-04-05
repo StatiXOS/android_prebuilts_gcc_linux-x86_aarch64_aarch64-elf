@@ -213,7 +213,7 @@ extern int crypt_checksalt (const char *__setting);
 #define CRYPT_SALT_OK              0
 #define CRYPT_SALT_INVALID         1
 #define CRYPT_SALT_METHOD_DISABLED 2  /* NOT implemented, yet. */
-#define CRYPT_SALT_METHOD_LEGACY   3
+#define CRYPT_SALT_METHOD_LEGACY   3  /* NOT implemented, yet. */
 #define CRYPT_SALT_TOO_CHEAP       4  /* NOT implemented, yet. */
 
 /* Convenience function to get the prefix of the preferred hash method,
@@ -244,7 +244,7 @@ extern const char *crypt_preferred_method (void);
                              XCRYPT_VERSION_MINOR)
 
 /* Version number as a string constant.  */
-#define XCRYPT_VERSION_STR "4.4.27"
+#define XCRYPT_VERSION_STR "4.4.18"
 
 __END_DECLS
 
